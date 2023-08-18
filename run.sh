@@ -28,7 +28,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [[ $HOSTNAME != env-* ]]; then
+if [[ $HOSTNAME != team-* ]]; then
     exit 0
 fi
 
