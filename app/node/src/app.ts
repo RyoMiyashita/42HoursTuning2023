@@ -1,11 +1,23 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import { sessionRouter } from "./routes/session/controller";
-import { checkAuthMiddleware } from "./middleware/auth";
-import { usersRouter } from "./routes/users/controller";
-import { matchGroupRouter } from "./routes/match-groups/controller";
+import './tracer';
+
+import cookieParser from 'cookie-parser';
+import express from 'express';
+
+import { checkAuthMiddleware } from './middleware/auth';
+import { matchGroupRouter } from './routes/match-groups/controller';
+import { sessionRouter } from './routes/session/controller';
+import { usersRouter } from './routes/users/controller';
 
 export const app: express.Express = express();
+
+var dd_options = {
+  response_code: true,
+  tags: ["app:my_app"],
+};
+
+var connect_datadog = require("connect-datadog")(dd_options);
+// Add the datadog-middleware before your router
+app.use(connect_datadog);
 
 app.use(express.json());
 app.use(cookieParser());
