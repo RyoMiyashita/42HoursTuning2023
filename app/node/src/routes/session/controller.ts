@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -31,10 +31,7 @@ sessionRouter.post(
     const { mail, password }: { mail: string; password: string } = req.body;
 
     // crypto使った方が良さそう
-    const hashPassword = execSync(
-      `echo -n ${password} | shasum -a 256 | awk '{printf $1}'`,
-      { shell: "/bin/bash" }
-    ).toString();
+    const hashPassword = createHash("sha256").update(password).digest("hex");
 
     try {
       const userId = await getUserIdByMailAndPassword(mail, hashPassword);
